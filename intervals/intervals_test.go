@@ -58,7 +58,7 @@ func (ti timeInterval) PeriodEnd() time.Time {
 	return ti.normEnd()
 }
 
-var _ intervals.SortedIntervals = timeIntervals{}
+var _ intervals.SortableIntervals = timeIntervals{}
 
 func TestTimeIntervals(t *testing.T) {
 	tt := []struct {
@@ -123,7 +123,7 @@ func TestTimeIntervals(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 
-			var si intervals.SortedIntervals = tc.tis
+			var si intervals.SortableIntervals = tc.tis
 
 			err := intervals.CheckOverlap(si)
 
@@ -358,7 +358,7 @@ func TestPeriodsInRange(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			require.NoError(t, intervals.CheckOverlap(tc.tis), "intervals must not overlap")
 
-			i, j := intervals.PeriodsInRange(tc.tis, rng)
+			i, j := intervals.PeriodsOverlapRange(tc.tis, rng)
 			assert.Equal(t, tc.i, i, "i")
 			assert.Equal(t, tc.j, j, "j")
 		})
